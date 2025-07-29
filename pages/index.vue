@@ -1,7 +1,16 @@
 <template>
   <v-row justify="center" align="center">
     <v-col cols="12">
-      <v-data-table
+      
+      <v-card>
+      <v-toolbar color="transparent" elevation="0">
+        <v-toolbar-title>List of Customers</v-toolbar-title>
+        <v-spacer />
+        <v-btn color="primary" @click="createDialog = true"><v-icon left>mdi-plus</v-icon> Create</v-btn>
+
+      </v-toolbar>
+          <v-divider></v-divider>
+        <v-data-table
         :headers="headers"
         :items="customers"
         :items-per-page="10"
@@ -19,7 +28,7 @@
             bordered
             v-if="item.isVip == true"
           >
-            <v-avatar size="60">
+            <v-avatar size="40">
               <v-img
                 lazy-src="https://picsum.photos/id/11/10/6"
                 :src="item.profilePicture"
@@ -27,7 +36,7 @@
             </v-avatar>
           </v-badge>
           <div v-else>
-            <v-avatar size="60">
+            <v-avatar size="40">
               <v-img
                 lazy-src="https://picsum.photos/id/11/10/6"
                 :src="item.profilePicture"
@@ -39,6 +48,9 @@
           <v-btn color="primary" @click="getCustomerDetails(item)">View</v-btn>
         </template>
       </v-data-table>
+    </v-card>
+
+      
 
       <v-dialog v-model="customerDialog" width="500">
         <v-card>
@@ -122,6 +134,30 @@
         </v-card>
       </v-dialog>
 
+      <v-dialog v-model="createDialog" width="500">
+        <v-card>
+          <v-toolbar>
+            <v-toolbar-title><v-icon left>mdi-account</v-icon> Create Customer</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-btn @click="createDialog = false" icon><v-icon>mdi-close</v-icon></v-btn>
+          </v-toolbar>
+          <v-card-text>
+            <v-form class="mt-5">
+              <v-text-field label="Name" outlined></v-text-field>
+              <v-text-field label="Email Address" outlined></v-text-field>
+              <v-text-field label="Contact Number" outlined></v-text-field>
+              <v-textarea outlined label="Address" rows="2"></v-textarea>
+              <v-text-field label="Age" type="number" outlined></v-text-field>
+              <v-checkbox label="Is VIP"></v-checkbox>
+            </v-form>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-btn color="primary" block class="my-3">Submit</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
     </v-col>
   </v-row>
 </template>
@@ -144,6 +180,7 @@ export default {
       customers: [],
       loading: true,
       customerDialog: false,
+      createDialog: false,
       customerName: "",
       customerEmail: "",
       customerPhone: "",
